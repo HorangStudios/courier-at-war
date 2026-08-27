@@ -2,7 +2,7 @@ name: Deploy to Itch
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 env:
   ITCH_USERNAME: horangstudios
