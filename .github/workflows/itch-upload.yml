@@ -1,0 +1,27 @@
+name: Deploy to Itch
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  ITCH_USERNAME: horangstudios
+  ITCH_GAME_ID: courieratwar
+
+jobs:
+  deploy:
+    name: Upload HTML build to Itch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload to itch.io (HTML channel)
+        uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{ secrets.BUTLER_API_KEY }}
+          gameData: .                # upload repo root
+          itchUsername: ${{ env.ITCH_USERNAME }}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: html        # THIS is the important part

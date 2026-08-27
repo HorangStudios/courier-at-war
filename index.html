@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <title>Courier At War</title>
+    <link rel="stylesheet" href="assets/style.css" id="style">
+    <link rel="stylesheet" href="assets/jqueryui.css" id="style">
+
+    <script type="text/javascript" src="js/deps/three.min.js"></script>
+    <script type="text/javascript" src="js/deps/MTLLoader.js"></script>
+    <script type="text/javascript" src="js/deps/OBJLoader.js"></script>
+    <script type="text/javascript" src="js/deps/PointerLockControls.js"></script>
+    <script type="text/javascript" src="js/deps/SimplexNoise.js"></script>
+    <script type="text/javascript" src="js/deps/Cop~yShader.js"></script>
+    <script type="text/javascript" src="js/deps/PixelShader.js"></script>
+    <script type="text/javascript" src="js/deps/GammaCorrectionShader.js"></script>
+    <script type="text/javascript" src="js/deps/EffectComposer.js"></script>
+    <script type="text/javascript" src="js/deps/ShaderPass.js"></script>
+    <script type="text/javascript" src="js/deps/RenderPass.js"></script>
+    <script type="text/javascript" src="js/deps/OutlinePass.js"></script>
+
+    <script type="text/javascript" src="js/deps/jquery.js"></script>
+    <script type="text/javascript" src="js/deps/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/deps/fontawesome.js"></script>
+    <script type="text/javascript" src="js/deps/html2canvas.min.js"></script>
+    <script type="text/javascript" src="js/deps/ProjectedMaterial.js"></script>
+    <script type="text/javascript" src="js/deps/dither.js"></script>
+
+    <script type="text/javascript" src="js/paper.js" defer></script>
+    <script type="text/javascript" src="js/scene.js" defer></script>
+</head>
+
+<body id="body">
+    <div id="computer" class="split" style="height: 0vh;">
+        <p><i>SMDOS 1949</i></p>
+        <p><i>(c) Sigman Heavy Industries</i></p>
+
+        <table style="color: white;">
+            <tr>
+                <th>Shell Type</th>
+                <th>Charge</th>
+                <th>Velocity (m/s)</th>
+            </tr>
+            <tr>
+                <td>High Explosive</td>
+                <td>Low</td>
+                <td>320</td>
+            </tr>
+            <tr>
+                <td>High Explosive</td>
+                <td>Medium</td>
+                <td>480</td>
+            </tr>
+            <tr>
+                <td>High Explosive</td>
+                <td>High</td>
+                <td>650</td>
+            </tr>
+            <tr>
+                <td>Fragmentation</td>
+                <td>Low</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>Fragmentation</td>
+                <td>Medium</td>
+                <td>450</td>
+            </tr>
+            <tr>
+                <td>Cluster Fragmentation</td>
+                <td>High</td>
+                <td>600</td>
+            </tr>
+        </table>
+
+        <button>AKU NAK MELETUP!!!</button>
+    </div>
+
+    <div id="drawer" class="split" style="height: 0vh;"></div>
+    <div id="radio" class="split" style="height: 0vh;">TELavivPhone</div>
+
+    <div class="crosshair" id="crosshair"></div>
+    <div class="effect"></div>
+    <div id="gameloader">
+        <progress id="loadingbar"></progress>
+    </div>
+</body>
+
+</html>
