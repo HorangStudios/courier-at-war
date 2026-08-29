@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768" viewBox="0 0 1024 768">
+  <defs>
+    <pattern id="gridFine" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#0c2f0c" stroke-width="1"/>
+    </pattern>
+    <pattern id="gridCoarse" width="256" height="256" patternUnits="userSpaceOnUse">
+      <path d="M256 0H0V256" fill="none" stroke="#145114" stroke-width="2"/>
+    </pattern>
+  </defs>
+
+  <rect width="1024" height="768" fill="#000000"/>
+  <rect width="1024" height="768" fill="url(#gridFine)"/>
+  <rect width="1024" height="768" fill="url(#gridCoarse)"/>
+
+  <g fill="none" stroke="#1a7a1a" stroke-width="2">
+    <path d="M180 0 L180 220 L300 300 L300 520 L430 680 L430 768"/>
+    <circle cx="300" cy="260" r="60"/>
+    <circle cx="300" cy="260" r="115"/>
+    <circle cx="300" cy="260" r="170"/>
+    <ellipse cx="720" cy="430" rx="110" ry="65"/>
+    <ellipse cx="720" cy="430" rx="175" ry="105"/>
+    <ellipse cx="720" cy="430" rx="240" ry="145"/>
+    <path d="M 60 620 Q 200 560 360 610 T 660 600 T 980 640" stroke="#0f3f0f" stroke-width="3" stroke-dasharray="10 8"/>
+  </g>
+
+  <g font-family="monospace">
+    <text x="66" y="52" font-size="24" fill="#2fbf2f">GRID // SECTOR 7</text>
+    <text x="66" y="88" font-size="20" fill="#1a7a1a">COVERAGE: PARTIAL</text>
+  </g>
+
+  <g transform="translate(912,150)">
+    <circle r="44" fill="none" stroke="#1a7a1a" stroke-width="2"/>
+    <path d="M0,-36 L9,12 L0,2 L-9,12 Z" fill="#2fbf2f"/>
+    <text y="70" text-anchor="middle" fill="#2fbf2f" font-family="monospace" font-size="20">N</text>
+  </g>
+</svg>

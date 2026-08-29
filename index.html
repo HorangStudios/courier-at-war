@@ -35,45 +35,59 @@
         <p><i>SMDOS 1949</i></p>
         <p><i>(c) Sigman Heavy Industries</i></p>
 
-        <table style="color: white;">
-            <tr>
-                <th>Shell Type</th>
-                <th>Charge</th>
-                <th>Velocity (m/s)</th>
-            </tr>
-            <tr>
-                <td>High Explosive</td>
-                <td>Low</td>
-                <td>320</td>
-            </tr>
-            <tr>
-                <td>High Explosive</td>
-                <td>Medium</td>
-                <td>480</td>
-            </tr>
-            <tr>
-                <td>High Explosive</td>
-                <td>High</td>
-                <td>650</td>
-            </tr>
-            <tr>
-                <td>Fragmentation</td>
-                <td>Low</td>
-                <td>300</td>
-            </tr>
-            <tr>
-                <td>Fragmentation</td>
-                <td>Medium</td>
-                <td>450</td>
-            </tr>
-            <tr>
-                <td>Cluster Fragmentation</td>
-                <td>High</td>
-                <td>600</td>
-            </tr>
-        </table>
+        <div id="tabs">
+            <button class="tab-btn selected" data-tab="shell">FIRE CONTROL</button>
+            <button class="tab-btn" data-tab="map">MAP</button>
+        </div>
 
-        <button>AKU NAK MELETUP!!!</button>
+        <div id="tab-shell" class="tab-panel">
+            <table style="color: white;">
+                <tr>
+                    <th>Shell Type</th>
+                    <th>Charge</th>
+                    <th>Velocity (m/s)</th>
+                </tr>
+                <tr>
+                    <td>High Explosive</td>
+                    <td>Low</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>High Explosive</td>
+                    <td>Medium</td>
+                    <td>480</td>
+                </tr>
+                <tr>
+                    <td>High Explosive</td>
+                    <td>High</td>
+                    <td>650</td>
+                </tr>
+                <tr>
+                    <td>Fragmentation</td>
+                    <td>Low</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>Fragmentation</td>
+                    <td>Medium</td>
+                    <td>450</td>
+                </tr>
+                <tr>
+                    <td>Cluster Fragmentation</td>
+                    <td>High</td>
+                    <td>600</td>
+                </tr>
+            </table>
+
+            <button>AKU NAK MELETUP!!!</button>
+        </div>
+
+        <div id="tab-map" class="tab-panel" hidden>
+            <div class="map-container">
+                <img src="assets/map_placeholder.svg" alt="map placeholder">
+                <div id="map-layer"></div>
+            </div>
+        </div>
     </div>
 
     <div id="drawer" class="split" style="height: 0vh;"></div>
@@ -84,6 +98,33 @@
     <div id="gameloader">
         <progress id="loadingbar"></progress>
     </div>
+
+    <script type="text/javascript" src="js/world.js"></script>
+    <script type="text/javascript">
+        document.getElementById("tabs").addEventListener("click", (e) => {
+            const btn = e.target.closest(".tab-btn");
+            if (!btn) return;
+            document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            const tab = btn.dataset.tab;
+            document.querySelectorAll(".tab-panel").forEach((p) => p.hidden = p.id !== "tab-" + tab);
+        });
+
+        (function () {
+            const layer = document.getElementById("map-layer");
+            const rows = "ABCDE";
+            map.forEach((row, r) => {
+                row.forEach((cell, c) => {
+                    const p = document.createElement("div");
+                    p.className = "map-point";
+                    p.style.left = ((c + 0.5) / row.length * 100) + "%";
+                    p.style.top = ((r + 0.5) / map.length * 100) + "%";
+                    p.setAttribute("data-label", (rows[r] || r) + (c + 1));
+                    layer.appendChild(p);
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>

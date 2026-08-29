@@ -201,3 +201,69 @@ td, th {
 tr:nth-child(odd) td, th {
   border: green solid 1px;
 }
+
+/* --------------------------------------------------------------------- */
+
+#tabs {
+  display: flex;
+  gap: 5px;
+  padding: 0 15px 10px;
+}
+
+.tab-btn {
+  background: black;
+  color: white;
+  border: greenyellow solid 1px;
+  font-size: 1rem;
+  padding: 6px 18px;
+  cursor: pointer;
+}
+
+.tab-btn:hover {
+  background: green;
+}
+
+.tab-btn.selected {
+  background: white;
+  color: black !important;
+}
+
+.tab-panel {
+  padding: 0 15px 15px;
+}
+
+.map-container {
+  position: relative;
+  display: inline-block;
+  max-width: 680px;
+  border: greenyellow solid 1px;
+  background: black;
+}
+
+.map-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: greenyellow;
+  border: 1px solid green;
+  border-radius: 50%;
+  box-shadow: 0 0 8px greenyellow;
+}
+
+.map-point::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: greenyellow;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
