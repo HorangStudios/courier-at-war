@@ -63,30 +63,46 @@ function updateThreat() {
                 const distance = Math.abs(r - currentPlayerPosition.r) + Math.abs(c - currentPlayerPosition.c);
                 const eta = Math.min(distance * 10, 120);
 
+                // placeholder text; ignore pls
+                // <p>Travel request detected | Travel plan: ${(rows[currentPlayerPosition.r] || currentPlayerPosition.r) + (currentPlayerPosition.c + 1)} -> ${label} | ETA: ${eta}s</p>
+                // <p>Confirm? [y/n]</p>
+                // <p id="terminal-text">> </p>
+
+
                 terminal.style.display = "block";
                 terminal.innerHTML = `
-                    <p>PorOS Heavy Industries copyright 1947</p>
-                    <p>Travel request detected | Travel plan: ${(rows[currentPlayerPosition.r] || currentPlayerPosition.r) + (currentPlayerPosition.c + 1)} -> ${label} | ETA: ${eta}s</p>
-                    <p>Confirm? [y/n]</p>
+                    <p>PorOS Heavy Industries © 1947</p>
+                    <p>Tile selected: ${label}</p>
+                    <p>Please choose one of the following actions:</p>
+                    <p>1. Begin travel plan | ${(rows[currentPlayerPosition.r] || currentPlayerPosition.r) + (currentPlayerPosition.c + 1)} -> ${label} | ETA: ${eta}s</p>
+                    <p>2. Check tile information for grid ${label}</p>
+                    <p>3. Deselect</p>
                     <p id="terminal-text">> </p>
                 `;
                 
                 const textElement = document.getElementById("terminal-text");
 
                 window.addEventListener("keyup", (e) => {
-                    if (e.key === "Y" || e.key === "y") {
+                    if (e.key === "1") {
                         currentPlayerPosition = { r, c };
-                        textElement.innerHTML = `> y`;
-                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; isShaking = true; }, 500);
-                        setTimeout(() => { terminal.innerHTML = `<p>*UPDATE RADAR*</p>`; isShaking = true; }, 2000);
+                        textElement.innerHTML = `> 1`;
+                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; }, 500);
                         document.querySelectorAll(".map-point").forEach(el => el.classList.remove("selected"));
                         p.classList.add("selected");
                         setTimeout(() => { terminal.style.display = "none"; }, 2500);
-                        setTimeout(() => { isShaking = false; }, 3000);
-                    } else if (e.key === "n" || e.key === "N") {
-                        textElement.innerHTML = `> n`;
-                        setTimeout(() => { terminal.innerHTML = `<p>Travel plan rejected.</p>`; }, 500);
-                        setTimeout(() => { terminal.style.display = "none"; }, 1500);
+                    } else if (e.key === "2") {
+                        textElement.innerHTML = `> 2`;
+                        setTimeout(() => { terminal.innerHTML = `<p>Checking tile information for grid ${label}...</p>`; }, 500);
+                        setTimeout(() => {
+                            const tileContents = map[r][c];
+                            const hasEnemies = tileContents.includes("MVSVH");
+                            const dangerText = hasEnemies ? "dangerous and has enemies" : "safe";
+                            terminal.innerHTML += `<p>Tile ${label} is ${dangerText}.</p>`;
+                        }, 2000);
+                        setTimeout(() => { terminal.style.display = "none"; }, 3000);
+                    } else if (e.key === "3") {
+                        textElement.innerHTML = `> 3`;
+                        setTimeout(() => { terminal.style.display = "none"; }, 500);
                     }
                 });
             });
