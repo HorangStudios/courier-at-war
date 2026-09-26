@@ -32,6 +32,13 @@ function terrain() {
     }
 }; terrain();
 
+function updateThreat() {
+    let enemies = map[currentPlayerPosition.r][currentPlayerPosition.c];
+    document.getElementById("enemies").innerHTML = "";
+    if (enemies.length != 0) document.getElementById("enemies").appendChild(document.createElement("button"))
+    requestAnimationFrame(updateThreat);
+}; updateThreat();
+
 (function () {
     const layer = document.getElementById("map-layer");
     const terminal = document.getElementById("travel-terminal");
@@ -71,6 +78,7 @@ function terrain() {
                         currentPlayerPosition = { r, c };
                         textElement.innerHTML = `> y`;
                         setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; isShaking = true; }, 500);
+                        setTimeout(() => { terminal.innerHTML = `<p>*UPDATE RADAR*</p>`; isShaking = true; }, 2000);
                         document.querySelectorAll(".map-point").forEach(el => el.classList.remove("selected"));
                         p.classList.add("selected");
                         setTimeout(() => { terminal.style.display = "none"; }, 2500);
