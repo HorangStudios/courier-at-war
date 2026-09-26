@@ -46,6 +46,7 @@ THREE.Cache.enabled = true;
 const loadingManager = new THREE.LoadingManager();
 const mtlLoader = new THREE.MTLLoader(loadingManager);
 
+var object, isShaking = false;
 mtlLoader.load('assets/map/map.mtl', function (materials) {
     materials.preload();
 
@@ -60,10 +61,25 @@ mtlLoader.load('assets/map/map.mtl', function (materials) {
             node.receiveShadow = true;
         });
 
+        object = obj;
         scene.add(obj);
         obj.castShadow = true;
         obj.receiveShadow = true;
         document.getElementById("gameloader").style.display = 'none';
+
+        function shake() {
+            const shakeIntensity = 0.01;
+            if (isShaking) {
+                object.position.x = 0 + (Math.random() - 0.5) * shakeIntensity;
+                object.position.y = 0 + (Math.random() - 0.5) * shakeIntensity;
+                object.position.z = 0 + (Math.random() - 0.5) * shakeIntensity;
+            } else {
+                object.position.x = 0
+                object.position.y = 0
+                object.position.z = 0
+            }
+            requestAnimationFrame(shake);
+        }; shake();
     });
 });
 
@@ -117,7 +133,7 @@ function animate() {
         renderer.domElement.style.filter = "grayscale(1)";
         crosshair.innerHTML = "<span>Click anywhere to resume game</span>";
     };
-    
+
     onWindowResize();
     requestAnimationFrame(animate);
 }; animate();
@@ -155,7 +171,7 @@ async function select(hover) {
     intersects.forEach(async (item, i) => {
         if (found || item.object.name == 'Union3') return;
         switch (item.object.name) {
-            case "Cube.006":
+            case "Cube.007":
                 if (hover) crosshair.innerHTML = "<span>[LMB] Use Computer</span>";
                 else transition(renderer, computer);
                 break;
@@ -163,7 +179,7 @@ async function select(hover) {
                 if (hover) crosshair.innerHTML = "<span>[LMB] Read Documents</span>";
                 else transition(renderer, drawer);
                 break;
-            case "Cube.009":
+            case "Cube.010":
                 if (hover) crosshair.innerHTML = "<span>[LMB] Radio</span>";
                 else transition(renderer, radio);
                 break;

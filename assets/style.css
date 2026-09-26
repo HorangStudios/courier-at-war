@@ -103,10 +103,6 @@ a {
   padding-inline: 15px;
 }
 
-.selected::before {
-  content: "> ";
-}
-
 .selected {
   background: white;
   color: black !important;
@@ -247,7 +243,7 @@ tr:nth-child(odd) td, th {
 }
 
 .map-point::after {
-  transform: translate(0, 150%);
+  transform: translate(0,65%);
   content: attr(data-label);
   display: block;
   text-align: center;
