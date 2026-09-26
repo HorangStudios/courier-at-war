@@ -70,10 +70,11 @@ function terrain() {
                     if (e.key === "Y" || e.key === "y") {
                         currentPlayerPosition = { r, c };
                         textElement.innerHTML = `> y`;
-                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; }, 500);
+                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; isShaking = true; }, 500);
                         document.querySelectorAll(".map-point").forEach(el => el.classList.remove("selected"));
                         p.classList.add("selected");
                         setTimeout(() => { terminal.style.display = "none"; }, 2500);
+                        setTimeout(() => { isShaking = false; }, 3000);
                     } else if (e.key === "n" || e.key === "N") {
                         textElement.innerHTML = `> n`;
                         setTimeout(() => { terminal.innerHTML = `<p>Travel plan rejected.</p>`; }, 500);
