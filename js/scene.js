@@ -11,10 +11,8 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.appendChild(renderer.domElement);
 
-camera.position.x = -40.21;
-camera.position.y = 4;
-camera.position.z = -43.41;
-camera.rotation.y = Math.PI / 2;
+camera.position.y = 0.43;
+camera.position.z = -1.5;
 camera.fov = 90;
 camera.updateProjectionMatrix();
 
@@ -25,7 +23,7 @@ hemiLight.position.set(0, 50, -50);
 scene.add(hemiLight);
 
 const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-dirLight.position.set(-39.21, 7, -45.41);
+dirLight.position.set(0, 7, 0);
 dirLight.shadow.mapSize.set(256, 256);
 dirLight.castShadow = true;
 dirLight.shadow.camera.left = -50;
@@ -60,42 +58,12 @@ mtlLoader.load('assets/map/map.mtl', function (materials) {
             node.material.dithering = true;
             node.castShadow = true;
             node.receiveShadow = true;
-
-            if (node.name == "Part2003") {
-                //window
-                node.material.transparent = true;
-                node.material = new THREE.MeshPhysicalMaterial({
-                    metalness: .9,
-                    roughness: .05,
-                    envMapIntensity: 0.9,
-                    clearcoat: 1,
-                    transparent: true,
-                    transmission: .95,
-                    opacity: .5,
-                    reflectivity: 0.2,
-                    refractionRatio: 0.985,
-                    ior: 0.9,
-                    side: THREE.DoubleSide,
-                });
-                setTimeout(() => document.getElementById("gameloader").style.display = "none", 1000);
-            } else if (node.name == "Union3") {
-                node.visible = false;
-            } else if (node.name == "Part1599") {
-                //lamp
-                node.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                node.material.needsUpdate = true;
-            } else if (node.name == "Part1614") {
-                node.material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-                node.material.needsUpdate = true;
-            } else {
-                //default
-                node.material.transparent = false;
-            }
         });
 
         scene.add(obj);
         obj.castShadow = true;
         obj.receiveShadow = true;
+        document.getElementById("gameloader").style.display = 'none';
     });
 });
 
@@ -105,7 +73,7 @@ const composer = new THREE.EffectComposer(renderer);
 composer.addPass(new THREE.RenderPass(scene, camera));
 
 var outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-outlinePass.pulsePeriod = 2;
+outlinePass.pulsePeriod = 3;
 composer.addPass(outlinePass);
 
 var pixelPass = new THREE.ShaderPass(THREE.PixelShader);
@@ -116,7 +84,7 @@ composer.addPass(pixelPass);
 
 var dither = new THREE.ShaderPass(OrderedDitherShader);
 dither.uniforms['scale'].value = 1;
-//composer.addPass(dither);
+composer.addPass(dither);
 
 var gamma_correction = new THREE.ShaderPass(THREE.GammaCorrectionShader);
 composer.addPass(gamma_correction);
@@ -127,6 +95,7 @@ var crosshair = document.getElementById("crosshair");
 var computer = document.getElementById("computer");
 var drawer = document.getElementById("drawer");
 var radio = document.getElementById("radio");
+var effect = document.getElementById("effect");
 
 function onWindowResize(windowresize = false) {
     var splitcanvas = renderer.domElement.clientHeight / window.innerHeight;
@@ -141,7 +110,7 @@ function onWindowResize(windowresize = false) {
 }; window.addEventListener('resize', () => { onWindowResize(true) }, false);
 
 function animate() {
-    if (renderer.domElement.style.display != "none") renderer.render(scene, camera);
+    if (renderer.domElement.style.display != "none") composer.render(scene, camera);
     if (controls.isLocked) {
         renderer.domElement.style.filter = "";
     } else {
@@ -157,10 +126,11 @@ function animate() {
 
 function transition(renderer, element) {
     if (controls.isLocked) controls.unlock();
-    element.style.height = "70vh";
+    element.style.height = "50vh";
+    effect.style.height = "50vh";
     crosshair.style.display = "none";
 
-    renderer.domElement.style.height = "30vh";
+    renderer.domElement.style.height = "50vh";
     renderer.domElement.style.animation = "";
 }
 
@@ -168,6 +138,7 @@ function revertToPointer() {
     Object.values(document.getElementsByClassName("split")).forEach(e => { e.style.height = '0vh' });
     crosshair.style.display = "block";
     crosshair.innerHTML = "";
+    effect.style.height = "0vh";
 
     renderer.domElement.style.height = "100vh";
     setTimeout(() => controls.lock(), 100);
@@ -184,7 +155,7 @@ async function select(hover) {
     intersects.forEach(async (item, i) => {
         if (found || item.object.name == 'Union3') return;
         switch (item.object.name) {
-            case "Part1614":
+            case "Cube.006":
                 if (hover) crosshair.innerHTML = "<span>[LMB] Use Computer</span>";
                 else transition(renderer, computer);
                 break;
@@ -192,8 +163,8 @@ async function select(hover) {
                 if (hover) crosshair.innerHTML = "<span>[LMB] Read Documents</span>";
                 else transition(renderer, drawer);
                 break;
-            case "Phone1":
-                if (hover) crosshair.innerHTML = "<span>[LMB] Call in strike</span>";
+            case "Cube.009":
+                if (hover) crosshair.innerHTML = "<span>[LMB] Radio</span>";
                 else transition(renderer, radio);
                 break;
             default:
