@@ -36,6 +36,8 @@ function terrain() {
     const layer = document.getElementById("map-layer");
     const terminal = document.getElementById("travel-terminal");
     const rows = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var termIsProcessing = false;   // This is so that the terminal waits until the current process is finished before the next one
+    var currentKeyHandler = null;
     
     map.forEach((row, r) => {
         row.forEach((cell, c) => {
@@ -75,29 +77,42 @@ function terrain() {
                 
                 const textElement = document.getElementById("terminal-text");
 
-                window.addEventListener("keyup", (e) => {
+                // Checks for player input in the terminal and executes the corresponding action based on the key pressed.
+                // available actions: 1, 2, 3
+                // setTimeout to give it a terminal loading effect
+                // MVSVH signifies enemy presence
+
+                if (currentKeyHandler) {
+                    window.removeEventListener("keyup", currentKeyHandler);
+                }
+                currentKeyHandler = (e) => {
+                    if (termIsProcessing) return;
                     if (e.key === "1") {
+                        termIsProcessing = true;
                         currentPlayerPosition = { r, c };
                         textElement.innerHTML = `> 1`;
-                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; }, 500);
+                        setTimeout(() => { terminal.innerHTML = `<p>Travelling to ${label}...</p>`; isShaking = true; }, 500);
                         document.querySelectorAll(".map-point").forEach(el => el.classList.remove("selected"));
                         p.classList.add("selected");
-                        setTimeout(() => { terminal.style.display = "none"; }, 2500);
+                        setTimeout(() => { terminal.style.display = "none"; termIsProcessing = false; }, 2500);
+                        setTimeout(() => { isShaking = false; }, 3000);
                     } else if (e.key === "2") {
+                        termIsProcessing = true;
                         textElement.innerHTML = `> 2`;
                         setTimeout(() => { terminal.innerHTML = `<p>Checking tile information for grid ${label}...</p>`; }, 500);
                         setTimeout(() => {
-                            const tileContents = map[r][c];
+                            const tileContents = map[r][c] ?? [];
                             const hasEnemies = tileContents.includes("MVSVH");
-                            const dangerText = hasEnemies ? "dangerous and has enemies" : "safe";
-                            terminal.innerHTML += `<p>Tile ${label} is ${dangerText}.</p>`;
+                            const resultText = hasEnemies ? `Tile ${label} contains enemies.` : `Tile ${label} does not contain enemies.`;
+                            terminal.innerHTML = `<p>${resultText}</p>`;
+                            setTimeout(() => { terminal.style.display = "none"; termIsProcessing = false; }, 1000);
                         }, 2000);
-                        setTimeout(() => { terminal.style.display = "none"; }, 3000);
                     } else if (e.key === "3") {
                         textElement.innerHTML = `> 3`;
                         setTimeout(() => { terminal.style.display = "none"; }, 500);
                     }
-                });
+                };
+                window.addEventListener("keyup", currentKeyHandler);
             });
 
             layer.appendChild(p);
